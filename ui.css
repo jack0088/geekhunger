@@ -17,6 +17,7 @@ body {
 button {
     position: relative;
     display: inline-block;
+    box-sizing: border-box;
     background-color: white;
     border: 1px solid black;
     margin-top: 0;
@@ -24,6 +25,7 @@ button {
     margin-bottom: 8px;
     margin-left: 8px;
     padding: 8px;
+    max-width: calc(100% - 8px);
 }
 
 .border:before,
@@ -72,6 +74,7 @@ a:hover {
 .button,
 button {
     cursor: pointer;
+    text-align: center;
     text-decoration: none;
 }
 
@@ -89,4 +92,8 @@ button:hover:before {
     left: -4px;
     height: auto;
     width: auto;
+}
+
+.fullwidth {
+    width: 100%;
 }
