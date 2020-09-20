@@ -15,48 +15,38 @@ body {
 .border,
 .button,
 button {
-    position: relative;
     display: inline-block;
     background-color: white;
     border: none;
     outline: 1px solid black;
     outline-offset: -1px;
+    box-shadow: -8px 8px 0px 0px black;
     box-sizing: border-box;
-    margin-top: 0;
-    margin-right: -8px;
-    margin-bottom: 8px;
     margin-left: 8px;
+    margin-bottom: 8px;
+    margin-top: 0;
     padding: 8px;
     max-width: calc(100% - 8px);
-}
-
-.border:before,
-.button:before,
-button:before {
-    content: " ";
-    position: absolute;
-    z-index: -1;
-    background-color: black;
-    top: 8px;
-    right: 8px;
-    bottom: -8px;
-    left: -8px;
-    height: auto;
-    width: auto;
 }
 
 .border-blue,
 .button:hover,
 button:hover {
-    border-color: rgb(57, 71, 150);
+    box-shadow: -8px 8px 0px 0px rgb(57, 71, 150);
+    outline-color: rgb(57, 71, 150);
+}
+
+.button:hover,
+button:hover,
+a:hover {
     color: rgb(57, 71, 150);
 }
 
-.border-blue:before,
-.button:hover:before,
-button:hover:before {
-    background-image: none;
-    background-color: rgb(57, 71, 150);
+.button,
+button {
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
 }
 
 a:before,
@@ -69,31 +59,19 @@ a:hover:before {
     height: 16px;
 }
 
-a:hover {
-    color: rgb(57, 71, 150);
-}
-
-.button,
-button {
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
+.button:before,
+.button:hover:before {
+    background-image: none;
+    width: 0;
+    height: 0;
 }
 
 .button:hover,
 button:hover {
-    top: 4px;
+    box-shadow: -4px 4px 0px 0px rgb(57, 71, 150);
     margin-left: 4px;
-}
-
-.button:hover:before,
-button:hover:before {
-    top: 4px;
-    right: 4px;
-    bottom: -4px;
-    left: -4px;
-    height: auto;
-    width: auto;
+    margin-bottom: 4px;
+    margin-top: 4px;
 }
 
 .html {
