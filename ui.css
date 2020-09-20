@@ -17,9 +17,11 @@ body {
 button {
     position: relative;
     display: inline-block;
-    box-sizing: border-box;
     background-color: white;
-    border: 1px solid black;
+    border: none;
+    outline: 1px solid black;
+    outline-offset: -1px;
+    box-sizing: border-box;
     margin-top: 0;
     margin-right: -8px;
     margin-bottom: 8px;
