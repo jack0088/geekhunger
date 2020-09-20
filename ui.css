@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,500;0,700;1,500;1,700&display=swap");
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 500;
+    font-size: 14pt;
+    color: black;
+}
+
+.border,
+.button,
+button {
+    position: relative;
+    display: inline-block;
+    background-color: white;
+    border: 1px solid black;
+    margin-top: 0;
+    margin-right: -8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    padding: 8px;
+}
+
+.border:before,
+.button:before,
+button:before {
+    content: " ";
+    position: absolute;
+    z-index: -1;
+    background-color: black;
+    top: 8px;
+    right: 8px;
+    bottom: -8px;
+    left: -8px;
+    height: auto;
+    width: auto;
+}
+
+.border-blue,
+.button:hover,
+button:hover {
+    border-color: rgb(57, 71, 150);
+    color: rgb(57, 71, 150);
+}
+
+.border-blue:before,
+.button:hover:before,
+button:hover:before {
+    background-image: none;
+    background-color: rgb(57, 71, 150);
+}
+
+a:before,
+a:hover:before {
+    content: " ";
+    display: inline-block;
+    background-image: url("hyperlink.svg");
+    background-size: contain;
+    width: 16px;
+    height: 16px;
+}
+
+a:hover {
+    color: rgb(57, 71, 150);
+}
+
+.button,
+button {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.button:hover,
+button:hover {
+    top: 4px;
+    margin-left: 4px;
+}
+
+.button:hover:before,
+button:hover:before {
+    top: 4px;
+    right: 4px;
+    bottom: -4px;
+    left: -4px;
+    height: auto;
+    width: auto;
+}
