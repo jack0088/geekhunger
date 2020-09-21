@@ -19,22 +19,28 @@ function stretch(elem) {
     var iframes = elem ? [elem] : document.getElementsByTagName("iframe");
     for (var id = 0; id < iframes.length; id++) {
         var elem = iframes[id];
-        var doc = elem.contentDocument ? elem.contentDocument : elem.contentWindow.document;
+        var doc = elem.contentDocument || elem.contentWindow.document;
         var html = doc.documentElement;
         var body = doc.body;
         var height = Math.max(
-            body.scrollHeight,
             body.offsetHeight,
-            html.clientHeight,
+            body.scrollHeight,
+            // body.getBoundingClientRect().height,
+            html.offsetHeight,
             html.scrollHeight,
-            html.offsetHeight
+            html.clientHeight
         );
+
+        elem.style.width = "0%"; // force a reset in size!
+        elem.style.height = "0%";
+
+        elem.style.width = "100%"; // fit size to content
+        elem.style.height = height + "px";
         
         elem.style.border = "none";
-        elem.style.width = "100%";
-        elem.style.height = height + "px";
         elem.style["background-color"] = "yellow";
-        elem.style.overflow = "auto";
+        elem.style.overflow = "hidden";
+        elem.setAttribute("scrolling", "no");
 
         body.style.margin = 0;
         body.style.padding = 0;
@@ -58,7 +64,16 @@ function iframe(origin, parent) {
 }
 
 
-window.onload = function() {
+window.addEventListener("load", function() {
     stretch();
-    iframe("https://mirelleborra.com", document.getElementById("playlist"));
-};
+    iframe("https://mirelleborra.com/about", document.getElementById("playlist"));
+});
+
+window.addEventListener("resize", function() {
+    console.log("resized window", window.innerWidth, window.innerHeight);
+    var iframes = document.getElementsByTagName("iframe");
+    for (var id = 0; id < iframes.length; id++) {
+        iframes[id].style.height = "0%";
+    }
+    stretch();
+});
