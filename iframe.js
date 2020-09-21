@@ -17,7 +17,7 @@ function grab(origin, use) {
 
 function stretch(elem) {
     var iframes = elem ? [elem] : document.getElementsByTagName("iframe");
-    for (var id = 0; id < iframes.length; id++) {
+    for(var id = 0; id < iframes.length; id++) {
         var elem = iframes[id];
         var doc = elem.contentDocument || elem.contentWindow.document;
         var html = doc.documentElement;
@@ -25,25 +25,21 @@ function stretch(elem) {
         var height = Math.max(
             body.offsetHeight,
             body.scrollHeight,
-            // body.getBoundingClientRect().height,
             html.offsetHeight,
             html.scrollHeight,
             html.clientHeight
         );
 
-        elem.style.width = "0%"; // force a reset in size!
-        elem.style.height = "0%";
-
-        elem.style.width = "100%"; // fit size to content
-        elem.style.height = height + "px";
-        
-        elem.style.border = "none";
-        elem.style["background-color"] = "yellow";
-        elem.style.overflow = "hidden";
-        elem.setAttribute("scrolling", "no");
-
         body.style.margin = 0;
         body.style.padding = 0;
+
+        elem.style.width = "100%";
+        elem.style.height = height + "px"; // fit size to content
+
+        elem.style.border = "none";
+        elem.style.overflow = "hidden";
+        elem.setAttribute("scrolling", "no");
+        elem.style["background-color"] = "yellow";
     }
 }
 
@@ -69,11 +65,13 @@ window.addEventListener("load", function() {
     iframe("https://mirelleborra.com/about", document.getElementById("playlist"));
 });
 
+
 window.addEventListener("resize", function() {
-    console.log("resized window", window.innerWidth, window.innerHeight);
     var iframes = document.getElementsByTagName("iframe");
-    for (var id = 0; id < iframes.length; id++) {
-        iframes[id].style.height = "0%";
+    for(var id = 0; id < iframes.length; id++) {
+        var elem = iframes[id];
+        elem.style.height = "0%";
+        elem.style.height = 0;
+        stretch(elem);
     }
-    stretch();
 });
