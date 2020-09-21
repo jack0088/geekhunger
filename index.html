@@ -4,13 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Geekhunger</title>
     <link href="ui.css" rel="stylesheet">
+    <script src="iframe.js" type="text/javascript"></script>
 </head>
 <body>
-    <div class="grid">
-        <iframe src="test.html" class="html grid-double"></iframe>
-        <iframe src="test.html" class="html grid-single"></iframe>
-        <iframe src="test.html" class="html grid-double"></iframe>
-        <iframe src="test.html" class="html grid-single"></iframe>
-    </div>
+    <section id="playlist" class="grid">
+        <iframe src="template.html" class="grid-double"></iframe>
+        <iframe src="http://192.168.0.121:8080/template.html" class="grid-single"></iframe>
+        <iframe src="template.html" class="grid-double"></iframe>
+        <iframe src="template.html" class="grid-single"></iframe>
+    </section>
 </body>
 </html>
