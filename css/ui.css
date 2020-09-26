@@ -3,7 +3,9 @@
 @import url("grid.css");
 @import url("playlist.css");
 
-* {
+body {
+    margin: 0;
+    padding: 0;
     font-family: "Work Sans", sans-serif;
     font-weight: 500;
     font-size: 14pt;
@@ -11,13 +13,10 @@
     color: black;
 }
 
-body {
-    margin: 0;
-    padding: 0;
-}
-
 h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
+    font-size: 14pt;
+    line-height: 16pt;
 }
 
 h1 {
