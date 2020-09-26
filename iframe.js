@@ -1,3 +1,11 @@
+function assert(condition, message) {
+    if(!condition) {
+        throw message || "Assertion failed!";
+    }
+}
+
+
+
 function copy(origin, use) {
     var api = "https://api.allorigins.win/get?url="; // https://github.com/gnuns/allorigins
     var uri = api + encodeURIComponent(origin);
@@ -39,7 +47,7 @@ function fit(element) {
             element = document.getElementsByTagName("iframe");
         }
         for(var id = 0; id < element.length; id++) {
-            element[id].style.height = 0; // force to change
+            element[id].style.height = 0; // force to change (important so some browsers)
             fit(element[id]);
         }
     }
@@ -52,8 +60,8 @@ function iframe(origin, parent) {
     element.addEventListener("load", fit.bind(element));
 
     if(origin.startsWith("http") && !origin.startsWith(window.location.origin)) {
-        copy(origin, function(src) {
-            element.srcdoc = src;
+        copy(origin, function(source) {
+            element.srcdoc = source;
         });
     } else {
         element.src = origin;
@@ -73,7 +81,7 @@ window.addEventListener("load", function() {
     iframe("template/hyperlink.html", grid);
     iframe("template/playlist.html", grid);
     // iframe("https://www.youtube.com/channel/UC3Qk1lecHOkzYqIqeqj8uyA?view_as=subscriber", grid);
-    iframe("http://mirelleborra.com", grid);
+    iframe("https://mirelleborra.com", grid);
 });
 
 
