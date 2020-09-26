@@ -80,8 +80,11 @@ window.addEventListener("load", function() {
     iframe("template/grid.html", grid);
     iframe("template/hyperlink.html", grid);
     iframe("template/playlist.html", grid);
+    // iframe("http://designtagebuch.de", grid);
+    // iframe("https://mirelleborra.com", grid);
+    // iframe("https://freshman.tech/custom-html5-video/", grid);
     // iframe("https://www.youtube.com/channel/UC3Qk1lecHOkzYqIqeqj8uyA?view_as=subscriber", grid);
-    iframe("https://mirelleborra.com", grid);
+    // iframe("https://amazon.de", grid);
 });
 
 
