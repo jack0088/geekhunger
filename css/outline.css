@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,500;0,700;1,500;1,700&display=swap");
+
+.gh-outline {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 500;
+    font-size: 14pt;
+    line-height: 16pt;
+    color: black;
+}
+
+.gh-outline {
+    display: inline-block;
+    background-color: white;
+    text-decoration: none;
+    border: none;
+    outline: 1px solid black;
+    outline-offset: -1px;
+    box-shadow: -8px 8px 0px 0px black;
+    box-sizing: border-box;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    margin-right: 0;
+    margin-top: 0;
+    padding: 8px;
+    max-width: calc(100% - 8px);
+}
+
+.gh-outline-blue {
+    outline-color: rgb(57, 71, 150);
+    box-shadow: -8px 8px 0px 0px rgb(57, 71, 150);
+}
+
+.gh-fullwidth {
+    width: 100%;
+}

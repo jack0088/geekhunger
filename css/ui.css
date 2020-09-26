@@ -1,0 +1,21 @@
+@import url("outline.css");
+@import url("hyperlink.css");
+@import url("grid.css");
+
+* {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 500;
+    font-size: 14pt;
+    line-height: 16pt;
+    color: black;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 24pt;
+    line-height: 24pt;
+}
