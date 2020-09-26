@@ -55,9 +55,28 @@ function fit(element) {
 
 
 
+function observe(element, handler) {
+    var listener = new MutationObserver(handler);
+    listener.observe(element, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        characterData: true
+    });
+    return listener; // to remove listener call listener.disconnect()
+}
+
+
+
 function iframe(origin, parent) {
     var element = document.createElement("iframe");
-    element.addEventListener("load", fit.bind(element));
+    
+    // element.addEventListener("load", fit.bind(element));
+    element.addEventListener("load", function() {
+        var body = (element.contentDocument || element.contentWindow.document).body;
+        observe(body, fit.bind(element));
+        fit(element);
+    });
 
     if(origin.startsWith("http") && !origin.startsWith(window.location.origin)) {
         copy(origin, function(source) {
@@ -82,7 +101,7 @@ window.addEventListener("load", function() {
     iframe("template/playlist.html", grid);
     // iframe("http://designtagebuch.de", grid);
     // iframe("https://mirelleborra.com", grid);
-    // iframe("https://freshman.tech/custom-html5-video/", grid);
+    iframe("https://freshman.tech/custom-html5-video/", grid);
     // iframe("https://www.youtube.com/channel/UC3Qk1lecHOkzYqIqeqj8uyA?view_as=subscriber", grid);
     // iframe("https://amazon.de", grid);
 });
