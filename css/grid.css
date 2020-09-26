@@ -1,4 +1,4 @@
-.grid {
+.gh-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: minmax(min-content, max-content);
@@ -7,14 +7,14 @@
     padding: 16px;
 }
 
-.grid-single {
+.gh-grid-single { /* default */
     grid-column: span 1;
 }
 
-.grid-double {
+.gh-grid-double {
     grid-column: span 2;
 }
 
-.fullwidth {
+.gh-fullwidth {
     width: 100%;
 }

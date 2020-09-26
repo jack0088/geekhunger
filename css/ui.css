@@ -1,6 +1,7 @@
-@import url("outline.css");
+@import url("box3d.css");
 @import url("hyperlink.css");
 @import url("grid.css");
+@import url("playlist.css");
 
 * {
     font-family: "Work Sans", sans-serif;
@@ -13,6 +14,10 @@
 body {
     margin: 0;
     padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
 }
 
 h1 {

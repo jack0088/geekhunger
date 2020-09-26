@@ -1,8 +1,6 @@
-function grab(origin, use) {
-    // https://github.com/gnuns/allorigins
-    // https://github.com/Rob--W/cors-anywhere/
-    var api = "https://api.allorigins.win/get?url="; // https://api.allorigins.win/raw?url=
-    var uri = api + encodeURIComponent(origin || window.location.origin);
+function copy(origin, use) {
+    var api = "https://api.allorigins.win/get?url="; // https://github.com/gnuns/allorigins
+    var uri = api + encodeURIComponent(origin);
     fetch(uri)
     .then(function(response) {
         if(response.ok) {
@@ -15,11 +13,10 @@ function grab(origin, use) {
 }
 
 
-function stretch(elem) {
-    var iframes = elem ? [elem] : document.getElementsByTagName("iframe");
-    for(var id = 0; id < iframes.length; id++) {
-        var elem = iframes[id];
-        var doc = elem.contentDocument || elem.contentWindow.document;
+
+function fit(element) {
+    if(typeof element !== "undefined" && element instanceof HTMLElement) {
+        var doc = element.contentDocument || element.contentWindow.document;
         var html = doc.documentElement;
         var body = doc.body;
         var height = Math.max(
@@ -29,56 +26,62 @@ function stretch(elem) {
             html.scrollHeight,
             html.clientHeight
         );
-
         body.style.margin = 0;
         body.style.padding = 0;
-
-        elem.style.width = "100%";
-        elem.style.height = height + "px"; // fit size to content
-
-        elem.style.border = "none";
-        elem.style.overflow = "hidden";
-        elem.setAttribute("scrolling", "no");
-        elem.style["background-color"] = "yellow";
+        element.style.width = "100%";
+        element.style.height = height + "px"; // fit size to content
+        element.style.border = "none";
+        element.style.overflow = "hidden";
+        element.setAttribute("scrolling", "no");
+        element.style.border = "thin dotted red"; // for debugging
+    } else {
+        if(!HTMLCollection.prototype.isPrototypeOf(element)) {
+            element = document.getElementsByTagName("iframe");
+        }
+        for(var id = 0; id < element.length; id++) {
+            element[id].style.height = 0; // force to change
+            fit(element[id]);
+        }
     }
 }
+
 
 
 function iframe(origin, parent) {
-    var elem = document.createElement("iframe");
-    elem.addEventListener("load", function() {
-        stretch(elem);
-    });
+    var element = document.createElement("iframe");
+    element.addEventListener("load", fit.bind(element));
+
     if(origin.startsWith("http") && !origin.startsWith(window.location.origin)) {
-        grab(origin, function(src) {
-            elem.srcdoc = src;
+        copy(origin, function(src) {
+            element.srcdoc = src;
         });
     } else {
-        elem.src = origin;
+        element.src = origin;
     }
-    (parent || document.body).appendChild(elem);
-    return elem;
+
+    (parent || document.body).appendChild(element);
+    return element;
 }
 
 
+
+window.addEventListener("resize", fit);
 window.addEventListener("load", function() {
-    stretch();
-    iframe("https://youtube.de", document.getElementById("playlist"));
+    var grid = document.getElementsByClassName("gh-grid")[0];
+    iframe("template/box3d.html", grid);
+    iframe("template/grid.html", grid);
+    iframe("template/hyperlink.html", grid);
+    iframe("template/playlist.html", grid);
+    // iframe("https://www.youtube.com/channel/UC3Qk1lecHOkzYqIqeqj8uyA?view_as=subscriber", grid);
+    iframe("http://mirelleborra.com", grid);
 });
 
 
-window.addEventListener("resize", function() {
-    var iframes = document.getElementsByTagName("iframe");
-    for(var id = 0; id < iframes.length; id++) {
-        var elem = iframes[id];
-        elem.style.height = 0;
-        stretch(elem);
-    }
-});
+
 
 
 // try this:
-// grab(origin)
+// copy(origin)
 // then append to html source <base href="https://api.allorigins.win/get?callback=update&url=" + iframe.location.origin>
 // the base should automatically prepend all href, action, src values
 // when user clicks link inside the iframe or fires an action, it will go through the proxy obove and come back

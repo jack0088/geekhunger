@@ -1,60 +1,4 @@
-/*
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,500;0,700;1,500;1,700&display=swap");
-
-.gh-hyperlink,
-.gh-button {
-    font-family: "Work Sans", sans-serif;
-    font-weight: 500;
-    font-size: 14pt;
-    line-height: 16pt;
-    color: black;
-}
-
-.gh-hyperlink:hover,
-.gh-button:hover {
-    color: rgb(57, 71, 150);
-}
-
-.gh-hyperlink:before {
-    content: " ";
-    display: inline-block;
-    background-image: url("hyperlink.svg");
-    background-size: contain;
-    width: 16px;
-    height: 16px;
-}
-
-.gh-button {
-    display: inline-block;
-    background-color: white;
-    text-decoration: none;
-    border: none;
-    outline: 1px solid black;
-    outline-offset: -1px;
-    box-shadow: -8px 8px 0px 0px black;
-    box-sizing: border-box;
-    margin-left: 8px;
-    margin-bottom: 8px;
-    margin-right: 0;
-    margin-top: 0;
-    padding: 8px;
-    max-width: calc(100% - 8px);
-}
-
-.gh-button:hover {
-    outline-color: rgb(57, 71, 150);
-    box-shadow: -4px 4px 0px 0px rgb(57, 71, 150);
-    position: relative;
-    left: -4px;
-    bottom: -4px;
-}
-
-.gh-fullwidth {
-    width: 100%;
-}
-*/
-
-@import url("outline.css");
+@import url("box3d.css");
 
 .gh-hyperlink {
     font-family: "Work Sans", sans-serif;
@@ -74,13 +18,13 @@
 }
 
 .gh-hyperlink:hover,
-a.gh-outline:hover,
-button.gh-outline:hover {
+a.gh-box3d:hover,
+button.gh-box3d:hover {
     color: rgb(57, 71, 150);
 }
 
-a.gh-outline:hover,
-button.gh-outline:hover {
+a.gh-box3d:hover,
+button.gh-box3d:hover {
     outline-color: rgb(57, 71, 150);
     box-shadow: -4px 4px 0px 0px rgb(57, 71, 150);
     position: relative;
