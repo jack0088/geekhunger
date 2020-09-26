@@ -55,6 +55,13 @@ function fit(element) {
 
 
 
+function proxy(origin, source) {
+    // TODO first remove location.origin prefix from all src, href and action attributes (to make absolute paths relative again)
+    // TODO then add <base> with proxy prefix and location.origin (so that relative paths become absolute again and get routed through the proxy server)
+}
+
+
+
 function observe(element, handler) {
     var listener = new MutationObserver(handler)
     listener.observe(element, {
@@ -72,8 +79,9 @@ function iframe(origin, parent) {
     var element = document.createElement("iframe")
 
     element.addEventListener("load", function() {
-        var body = (element.contentDocument || element.contentWindow.document).body
-        observe(body, fit.bind(element))
+        var doc = element.contentDocument || element.contentWindow.document
+        proxy(origin, doc)
+        observe(doc.body, fit.bind(element))
         fit(element)
     })
 
