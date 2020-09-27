@@ -1,7 +1,5 @@
 function assert(condition, message) {
-    if(!condition) {
-        throw message || "Assertion failed!"
-    }
+    if(!condition) throw message || "Assertion failed!"
 }
 
 
@@ -21,9 +19,9 @@ function script(url) {
 
 
 
-function copy(origin) {
+async function copy(origin) {
     // https://github.com/gnuns/allorigins
-    fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(origin), {
+    var response = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(origin), {
         method: "GET",
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
         redirect: "follow", // manual, *follow, error
@@ -31,14 +29,7 @@ function copy(origin) {
         credentials: "same-origin", // include, *same-origin, omit
         mode: "cors" // no-cors, *cors, same-origin
     })
-    .then(function(response) {
-        if(response.ok) {
-            return response.text()
-        }
-    })
-    .then(function(source) {
-        return use(source)
-    })
+    if(response.ok) return await response.text()
 }
 
 
@@ -142,6 +133,15 @@ function init() {
     // need to relink(ifrm.contentDocument) BEFORE it gets parsed
     // also recursevly, when link gets clicked or ressource gets included
     // iframe("https://freshman.tech/custom-html5-video/")
+
+    async function lol() {
+        return
+        console.log("hello")
+    }
+
+    lol().catch(console.log.bind(null))
+
+    // copy("https://freshman.tech/custom-html5-video/").then(console.log.bind(null))
 }
 
 
