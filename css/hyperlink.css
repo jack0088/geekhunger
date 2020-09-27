@@ -9,12 +9,13 @@
 }
 
 .gh-hyperlink:before {
-    content: " ";
+    content: "";
     display: inline-block;
     background-image: url("hyperlink.svg");
     background-size: contain;
     width: 16px;
     height: 16px;
+    margin-right: 2px;
 }
 
 .gh-hyperlink:hover,

@@ -8,6 +8,15 @@ ul.gh-playlist {
     color: black;
 }
 
+ul.gh-playlist:before {
+    content: "";
+    display: inline-block;
+    background-image: url("playback.svg");
+    background-size: contain;
+    width: 24px;
+    height: 24px;
+}
+
 ul.gh-playlist,
 ul.gh-playlist ul {
     list-style-type: none;
@@ -17,16 +26,20 @@ ul.gh-playlist ul {
 
 ul.gh-playlist ul,
 ul.gh-playlist li {
-    margin-left: 16px;
+    margin-left: 14px;
+}
+
+ul.gh-playlist > li {
+    margin-left: 12px; /* half the playback icon width */
 }
 
 ul.gh-playlist li:before {
     content: "";
     display: inline-block;
     border-bottom: 1px solid black;
-    width: 16px;
-    height: calc(18pt / 2);
-    margin-right: 4px;
+    width: 16px; /* legth of hierarchy indentation */
+    height: 9pt; /* half the line-height */
+    margin-right: 4px; /* gap between border and font */
     vertical-align: top;
 }
 
