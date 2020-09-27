@@ -6,71 +6,40 @@ function assert(condition, message) {
 
 
 
-function copy(api, origin, use) {
-    var uri = api + encodeURIComponent(origin) // https://github.com/gnuns/allorigins
-    fetch(uri)
+function copy(origin, use) {
+    // https://github.com/gnuns/allorigins
+    fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(origin), {
+        method: "GET",
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        redirect: "follow", // manual, *follow, error
+        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        credentials: "same-origin", // include, *same-origin, omit
+        mode: "cors" // no-cors, *cors, same-origin
+    })
     .then(function(response) {
         if(response.ok) {
-            return response.json()
+            return response.text()
         }
     })
-    .then(function(data) {
-        use(data.contents)
+    .then(function(source) {
+        return use(source)
     })
 }
 
 
 
-function proxy(origin, use) {
-    /*
-    var reset = function(path) {
-        var host = new URL(origin)
-        var link = path // convert absolute to relative
-            .replace(host.origin, "")
-            .replace("//" + host.hostname, "")
-        if(!link.startsWith("#") // self-reference link without page reloading
-        && !link.startsWith("//") // http(s): anchronym
-        && !link.startsWith("http") // including http: and https:
-        && !link.startsWith("mailto:")
-        && !link.startsWith("callto:")
-        && !link.startsWith("tel:")
-        && !link.startsWith("fax:")
-        && !link.startsWith("maps:")
-        && !link.startsWith("geo:")
-        && !link.startsWith("fb:")
-        && !link.startsWith("twitter:")) {
-            var lol = "https://api.allorigins.win/raw?url=" + host.origin + link // convert relative to absolute with proxy prefix
-            // var lol = "https://api.allorigins.win/get?callback=use&url=" + host.origin + link // convert relative to absolute with proxy prefix
-            console.log(path, link, lol)
-            return lol
-        }
-        return path
-        // return "https://api.allorigins.win/raw?url=" + new URL(path, host.origin)
-    }
-    */
-    var host = new URL(origin)
-    var url = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
-    function reset(query) {
-        return query.replace(url, function(path) {
-            return "https://api.allorigins.win/raw?url=" + new URL(path, host.origin)
-        })
-    }
-    copy("https://api.allorigins.win/get?url=", origin, function(source) {
-        use(reset(source))
-        /*
-        var parser = new DOMParser()
-        var doc = parser.parseFromString(source, "text/html")
-        var blacklist = doc.querySelectorAll("[src], [href], [action]")
-        for(var id = 0; id < blacklist.length; id++) {
-            var elem = blacklist[id]
-            if(elem.getAttribute("src")) elem.setAttribute("src", reset(elem.getAttribute("src")))
-            if(elem.getAttribute("href")) elem.setAttribute("href", reset(elem.getAttribute("href")))
-            if(elem.getAttribute("action")) elem.setAttribute("action", reset(elem.getAttribute("action")))
-            // url() in stylesheets?
-        }
-        use(doc.documentElement.outerHTML)
-        */
-    })
+function relink(page) {
+    var blacklist = page.querySelectorAll("[src], [href], [action]")
+    console.log(page.URL)
+    console.log(blacklist)
+    // for(var id = 0; id < blacklist.length; id++) {
+    //     var elem = blacklist[id]
+    //     if(elem.getAttribute("src")) elem.setAttribute("src", reset(elem.getAttribute("src")))
+    //     if(elem.getAttribute("href")) elem.setAttribute("href", reset(elem.getAttribute("href")))
+    //     if(elem.getAttribute("action")) elem.setAttribute("action", reset(elem.getAttribute("action")))
+    //     // url() in stylesheets?
+           // references in other files like .js? should I handle these as well?
+    // }
 }
 
 
@@ -122,37 +91,30 @@ function observe(element, handler) {
 
 
 function iframe(origin, parent) {
-    var element = document.createElement("iframe")
-    element.src = "about:blank"
-
-    element.addEventListener("load", function() {
-        var doc = element.contentDocument || element.contentWindow.document
-        observe(doc.body, fit.bind(element))
-        fit(element)
+    var ifrm = document.createElement("iframe")
+    ifrm.src = "about:blank"
+    ifrm.addEventListener("load", function() {
+        observe(ifrm.contentDocument, fit.bind(ifrm)) // hopefully, the mutation observer gets garbage-collected, once the element is removed from the DOM?!
+        fit(ifrm)
     })
-
     if(origin.startsWith("http") && !origin.startsWith(window.location.origin)) {
-        proxy(origin, function(source) {
-            element.srcdoc = source
+        copy(origin, function(source) {
+            ifrm.srcdoc = source
         })
     } else {
         element.src = origin
     }
-
-    (parent || document.body).appendChild(element)
-    return element
+    (parent || document.body).appendChild(ifrm) // native DOMParser trigger
+    relink(ifrm.contentDocument)
+    return ifrm
 }
 
 
 
 window.addEventListener("load", function() {
-    proxy("https://freshman.tech/custom-html5-video/", function(source) {
-        var frm = document.createElement("iframe")
-        frm.addEventListener("load", fit.bind(frm))
-        frm.src = "about:blank"
-        frm.srcdoc = source
-        document.body.appendChild(frm)
-    })
+    // need to relink(ifrm.contentDocument) BEFORE it gets parsed
+    // also recursevly, when link gets clicked or ressource gets included
+    iframe("https://freshman.tech/custom-html5-video/")
 })
 
 
