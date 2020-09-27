@@ -6,7 +6,22 @@ function assert(condition, message) {
 
 
 
-function copy(origin, use) {
+function script(url) {
+    return new Promise(function(resolve, reject) {
+        var duplicate = document.querySelectorAll("[src=\"" + url + "\"]")
+        if(duplicate.length > 0) reject("Script from origin '" + url + "' has already been included!", duplicate[0])
+        var elem = document.createElement("script")
+        elem.type = "text/javascript"
+        elem.src = url
+        elem.async = false
+        elem.addEventListener("load", resolve.bind(null, elem))
+        document.head.appendChild(elem)
+    })
+}
+
+
+
+function copy(origin) {
     // https://github.com/gnuns/allorigins
     fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(origin), {
         method: "GET",
@@ -28,10 +43,10 @@ function copy(origin, use) {
 
 
 
-function relink(page) {
-    var blacklist = page.querySelectorAll("[src], [href], [action]")
-    console.log(page.URL)
-    console.log(blacklist)
+function relink(query) {
+    // var blacklist = page.querySelectorAll("[src], [href], [action]")
+    // console.log(page.URL)
+    // console.log(blacklist)
     // for(var id = 0; id < blacklist.length; id++) {
     //     var elem = blacklist[id]
     //     if(elem.getAttribute("src")) elem.setAttribute("src", reset(elem.getAttribute("src")))
@@ -40,14 +55,16 @@ function relink(page) {
     //     // url() in stylesheets?
            // references in other files like .js? should I handle these as well?
     // }
+    return query
 }
 
 
 
 function fit(element) {
     if(typeof element !== "undefined" && element instanceof HTMLElement) {
-        var doc = element.contentDocument || element.contentWindow.document
+        var doc = element.contentDocument
         var html = doc.documentElement
+        // var head = doc.head
         var body = doc.body
         var height = Math.max(
             body.offsetHeight,
@@ -77,8 +94,8 @@ function fit(element) {
 
 
 
-function observe(element, handler) {
-    var listener = new MutationObserver(handler)
+function watch(element, run) {
+    var listener = new MutationObserver(run)
     listener.observe(element, {
         childList: true,
         subtree: true,
@@ -94,41 +111,40 @@ function iframe(origin, parent) {
     var ifrm = document.createElement("iframe")
     ifrm.src = "about:blank"
     ifrm.addEventListener("load", function() {
-        observe(ifrm.contentDocument, fit.bind(ifrm)) // hopefully, the mutation observer gets garbage-collected, once the element is removed from the DOM?!
+        watch(ifrm.contentDocument, fit.bind(ifrm)) // hopefully, the mutation observer gets garbage-collected, once the element is removed from the DOM?! But we store a reference to it on the element itself, just in case.
         fit(ifrm)
     })
     if(origin.startsWith("http") && !origin.startsWith(window.location.origin)) {
         copy(origin, function(source) {
-            ifrm.srcdoc = source
+            ifrm.srcdoc = relink(source)
         })
     } else {
-        element.src = origin
+        ifrm.src = origin
     }
-    (parent || document.body).appendChild(ifrm) // native DOMParser trigger
-    relink(ifrm.contentDocument)
+    (parent || document.body).appendChild(ifrm) // leverage native DOMParser
     return ifrm
 }
 
 
 
-window.addEventListener("load", function() {
+function init() {
+    // var grid = document.getElementsByClassName("gh-grid")[0]
+
+    // iframe("/template/box3d.html", grid)
+    // iframe("/template/grid.html", grid)
+    // iframe("/template/hyperlink.html", grid)
+    // iframe("/template/playlist.html", grid)
+    // iframe("http://designtagebuch.de", grid)
+    // iframe("https://mirelleborra.com", grid)
+    // iframe("https://www.youtube.com/channel/UC3Qk1lecHOkzYqIqeqj8uyA?view_as=subscriber", grid)
+    // iframe("https://amazon.de", grid)
+
     // need to relink(ifrm.contentDocument) BEFORE it gets parsed
     // also recursevly, when link gets clicked or ressource gets included
-    iframe("https://freshman.tech/custom-html5-video/")
-})
+    // iframe("https://freshman.tech/custom-html5-video/")
+}
 
 
 
-// window.addEventListener("resize", fit)
-// window.addEventListener("load", function() {
-//     var grid = document.getElementsByClassName("gh-grid")[0]
-//     iframe("template/box3d.html", grid)
-//     iframe("template/grid.html", grid)
-//     iframe("template/hyperlink.html", grid)
-//     iframe("template/playlist.html", grid)
-//     // iframe("http://designtagebuch.de", grid)
-//     // iframe("https://mirelleborra.com", grid)
-//     iframe("https://freshman.tech/custom-html5-video/", grid)
-//     // iframe("https://www.youtube.com/channel/UC3Qk1lecHOkzYqIqeqj8uyA?view_as=subscriber", grid)
-//     // iframe("https://amazon.de", grid)
-// })
+window.addEventListener("resize", fit)
+window.addEventListener("load", init)
