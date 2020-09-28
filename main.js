@@ -58,18 +58,19 @@ function relink(source) {
 
 
 
-function iframe(origin, parent) {
+function iframe(origin, parent, setup) {
     return new Promise(function(resolve) {
         var ifrm = document.createElement("iframe")
         ifrm.src = "about:blank"
-        ifrm.width = "100%"
-        ifrm.height = 0
-        ifrm.style.overflow = "hidden"
+        ifrm.style.maxWidth = "100%"
+        ifrm.style.overflowX = "scroll"
+        ifrm.style.overflowY = "hidden"
         ifrm.style.border = "none"
         ifrm.style.display = "none"
         ifrm.classList.add("gh-fit") // this is the css class that style/iframe.js automatically reacts to
 
         ifrm.addEventListener("load", function(event) {
+            setup(event.target) // custom func to e.g. batch-add additional css classes, etc
             event.target.style.display = "block"
             return resolve(event.target)
         })
@@ -91,20 +92,23 @@ function iframe(origin, parent) {
 async function main() {
     var grid = document.getElementsByClassName("gh-grid")[0]
 
-    var a = await iframe("https://freshman.tech/custom-html5-video/", grid)
+    var settings = function(ifrm) {
+        ifrm.classList.add("gh-fit") // for debugging (this gets set automatically)
+        ifrm.classList.add("gh-fullwidth")
+    }
+
+    var a = await iframe("https://freshman.tech/custom-html5-video/", grid, settings)
     a.classList.add("gh-grid-double")
     
-    await iframe("/template/box3d.html", grid)
-    await iframe("/template/grid.html", grid)
-    await iframe("/template/hyperlink.html", grid)
-    var b = await iframe("/template/playlist.html", grid)
-    b.classList.add("gh-fit")
+    await iframe("/template/box3d.html", grid, settings)
+    var c = await iframe("/template/grid.html", grid, settings)
+    c.classList.add("gh-fullwidth") // for debugging (just testing)
+
+    await iframe("/template/hyperlink.html", grid, settings)
+    await iframe("/template/playlist.html", grid, settings)
     
-    // var e = await iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
-    // e.classList.add("gh-fit")
-
+    // await iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
     // await iframe("https://apple.com")
-
     // iframe("http://designtagebuch.de")
     // iframe("https://mirelleborra.com", grid)
     // iframe("https://www.youtube.com/channel/UC3Qk1lecHOkzYqIqeqj8uyA?view_as=subscriber", grid)

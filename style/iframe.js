@@ -9,12 +9,15 @@ function fit() {
         var ifrm = iframes[id] // or win.frameElement
 
         if(body) {
-            body.style.overflow = "hidden"
+            body.style.overflowX = "scroll" // scrollbar-jitter fix
+            body.style.overflowY = "hidden"
         }
         if(html) {
-            html.style.overflow = "hidden"
+            html.style.overflowX = "scroll" // scrollbar-jitter fix
+            html.style.overflowY = "hidden"
             var style = win.getComputedStyle(html)
-            ifrm.height = parseInt(style.getPropertyValue("height")) // round value
+            ifrm.width = parseInt(style.getPropertyValue("width")) // round value
+            ifrm.height = parseInt(style.getPropertyValue("height"))
         }
     }
 
