@@ -34,7 +34,7 @@ async function copy(origin) {
 
 
 
-function relink(query) {
+function relink(source) {
     // var blacklist = page.querySelectorAll("[src], [href], [action]")
     // console.log(page.URL)
     // console.log(blacklist)
@@ -46,7 +46,7 @@ function relink(query) {
     //     // url() in stylesheets?
            // references in other files like .js? should I handle these as well?
     // }
-    return query
+    return source
 }
 
 
@@ -54,30 +54,30 @@ function relink(query) {
 function fit(element) {
     if(typeof element !== "undefined" && element instanceof HTMLElement) {
         var doc = element.contentDocument
-        var html = doc.documentElement
-        // var head = doc.head
         var body = doc.body
+        var scroller = doc.scrollingElement || doc.documentElement
         var height = Math.max(
+            scroller.offsetHeight,
+            scroller.clientHeight,
+            scroller.scrollHeight,
             body.offsetHeight,
-            body.scrollHeight,
-            html.offsetHeight,
-            html.scrollHeight,
-            html.clientHeight
+            body.scrollHeight
         )
         body.style.margin = 0
         body.style.padding = 0
         element.style.width = "100%"
-        element.style.height = height + "px" // fit size to content
+        element.style.height = 0 // safari fix
+        element.style.height = height + "px"
+        element.setAttribute("frameborder", "0")
         element.style.border = "none"
-        element.style.overflow = "hidden"
         element.setAttribute("scrolling", "no")
-        element.style.border = "thin dotted red" // for debugging
+        element.style.overflow = "hidden"
     } else {
         if(!HTMLCollection.prototype.isPrototypeOf(element)) {
             element = document.getElementsByTagName("iframe")
         }
         for(var id = 0; id < element.length; id++) {
-            element[id].style.height = 0 // force to change (important so some browsers)
+            element[id].style.height = 0 // safari fix
             fit(element[id])
         }
     }
@@ -98,17 +98,17 @@ function watch(element, run) {
 
 
 
-function iframe(origin, parent) {
+async function iframe(origin, parent) {
     var ifrm = document.createElement("iframe")
     ifrm.src = "about:blank"
     ifrm.addEventListener("load", function() {
-        watch(ifrm.contentDocument, fit.bind(ifrm)) // hopefully, the mutation observer gets garbage-collected, once the element is removed from the DOM?! But we store a reference to it on the element itself, just in case.
+        setTimeout(fit.bind(ifrm), 10) // safari fix (https://css-tricks.com/snippets/jquery/fit-iframe-to-content)
+        watch(ifrm.contentDocument.body, fit.bind(ifrm)) // in case scripts or css change the page structure
         fit(ifrm)
     })
     if(origin.startsWith("http") && !origin.startsWith(window.location.origin)) {
-        copy(origin, function(source) {
-            ifrm.srcdoc = relink(source)
-        })
+        var source = await copy(origin)
+        ifrm.srcdoc = relink(source)
     } else {
         ifrm.src = origin
     }
@@ -118,30 +118,25 @@ function iframe(origin, parent) {
 
 
 
-function init() {
-    // var grid = document.getElementsByClassName("gh-grid")[0]
-
-    // iframe("/template/box3d.html", grid)
-    // iframe("/template/grid.html", grid)
-    // iframe("/template/hyperlink.html", grid)
-    // iframe("/template/playlist.html", grid)
+async function init() {
+    var grid = document.getElementsByClassName("gh-grid")[0]
+    
+    await iframe("/template/box3d.html", grid)
+    await iframe("/template/grid.html", grid)
+    await iframe("/template/hyperlink.html", grid)
+    await iframe("/template/playlist.html", grid)
+    
+    // await iframe("https://freshman.tech/custom-html5-video/")
+    
     // iframe("http://designtagebuch.de", grid)
     // iframe("https://mirelleborra.com", grid)
     // iframe("https://www.youtube.com/channel/UC3Qk1lecHOkzYqIqeqj8uyA?view_as=subscriber", grid)
     // iframe("https://amazon.de", grid)
-
+    
     // need to relink(ifrm.contentDocument) BEFORE it gets parsed
     // also recursevly, when link gets clicked or ressource gets included
-    // iframe("https://freshman.tech/custom-html5-video/")
 
-    async function lol() {
-        return
-        console.log("hello")
-    }
-
-    lol().catch(console.log.bind(null))
-
-    // copy("https://freshman.tech/custom-html5-video/").then(console.log.bind(null))
+    console.log("done loading iframes")
 }
 
 
