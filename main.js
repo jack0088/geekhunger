@@ -100,12 +100,12 @@ async function main() {
     var a = await iframe("https://freshman.tech/custom-html5-video/", grid, settings)
     a.classList.add("gh-grid-double")
     
-    await iframe("/template/box3d.html", grid, settings)
-    var c = await iframe("/template/grid.html", grid, settings)
+    await iframe("template/box3d.html", grid, settings)
+    var c = await iframe("template/grid.html", grid, settings)
     c.classList.add("gh-fullwidth") // for debugging (just testing)
 
-    await iframe("/template/hyperlink.html", grid, settings)
-    await iframe("/template/playlist.html", grid, settings)
+    await iframe("template/hyperlink.html", grid, settings)
+    await iframe("template/playlist.html", grid, settings)
     
     // await iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
     // await iframe("https://apple.com")
