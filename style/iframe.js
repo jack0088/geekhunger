@@ -5,28 +5,20 @@ function fit() {
         var win = iframes[id].contentWindow
         var doc = win.document
         var html = doc.documentElement
-        var ifrm = iframes[id] // or win.frameElement
         var body = doc.body
-        var style = win.realtimeStyle
+        var ifrm = iframes[id] // or win.frameElement
 
-        if(html) {
-            html.style.overflow = "hidden"
-            if(!style) {
-                win.realtimeStyle = win.getComputedStyle(html) // cache pointer for performance?
-                style = win.realtimeStyle
-            }
-        }
         if(body) {
             body.style.overflow = "hidden"
         }
-        if(style) {
-            // var value = style.getPropertyValue("height")
-            // if(typeof value === "string" && value.endsWith("px")) ifrm.height = value
-            ifrm.height = parseInt(style.getPropertyValue("height"))
+        if(html) {
+            html.style.overflow = "hidden"
+            var style = win.getComputedStyle(html)
+            ifrm.height = parseInt(style.getPropertyValue("height")) // round value
         }
     }
 
-    this.requestAnimationFrame(this.fit)
+    requestAnimationFrame(fit)
 }
 
-window.addEventListener("load", window.requestAnimationFrame.bind(window, fit))
+addEventListener("load", requestAnimationFrame.bind(this, fit))

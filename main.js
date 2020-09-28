@@ -99,7 +99,6 @@ async function main() {
     await iframe("/template/hyperlink.html", grid)
     var b = await iframe("/template/playlist.html", grid)
     b.classList.add("gh-fit")
-
     
     // var e = await iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
     // e.classList.add("gh-fit")
@@ -114,11 +113,11 @@ async function main() {
 
 
 
-window.addEventListener("load", function() {
-    // script("style/iframe.js")
-    // .catch(console.warn)
-    // .then(function() {
+addEventListener("load", function() {
+    script("style/iframe.js")
+    .catch(console.warn)
+    .then(function() {
         main()
-    //     window.fit()
-    // })
+        fit() // run manually as the script will miss its onload-event
+    })
 })
