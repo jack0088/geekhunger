@@ -67,7 +67,7 @@ function iframe(origin, parent) {
         ifrm.style.overflow = "hidden"
         ifrm.style.border = "none"
         ifrm.style.display = "none"
-        ifrm.classList.add("gh-fit")
+        ifrm.classList.add("gh-fit") // this is the css class that style/iframe.js automatically reacts to
 
         ifrm.addEventListener("load", function(event) {
             event.target.style.display = "block"
