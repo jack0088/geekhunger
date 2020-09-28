@@ -7,7 +7,7 @@ function assert(condition, message) {
 function script(url) {
     return new Promise(function(resolve, reject) {
         var duplicate = document.querySelectorAll("[src=\"" + url + "\"]")
-        if(duplicate.length > 0) reject("Script from origin '" + url + "' has already been included!", duplicate[0])
+        if(duplicate.length > 0) return reject("Script from origin '" + url + "' has already been included!", duplicate[0])
         var elem = document.createElement("script")
         elem.type = "text/javascript"
         elem.src = url
@@ -63,21 +63,14 @@ function fit(element) {
             body.offsetHeight,
             body.scrollHeight
         )
-        body.style.margin = 0
-        body.style.padding = 0
-        element.style.width = "100%"
-        element.style.height = 0 // safari fix
-        element.style.height = height + "px"
-        element.setAttribute("frameborder", "0")
-        element.style.border = "none"
-        element.setAttribute("scrolling", "no")
-        element.style.overflow = "hidden"
+        element.setAttribute("width", "100%")
+        element.setAttribute("height", height)
     } else {
         if(!HTMLCollection.prototype.isPrototypeOf(element)) {
             element = document.getElementsByTagName("iframe")
         }
         for(var id = 0; id < element.length; id++) {
-            element[id].style.height = 0 // safari fix
+            element[id].setAttribute("height", 0) // safari fix
             fit(element[id])
         }
     }
@@ -88,9 +81,9 @@ function fit(element) {
 function watch(element, run) {
     var listener = new MutationObserver(run)
     listener.observe(element, {
+        attributes: true,
         childList: true,
         subtree: true,
-        attributes: true,
         characterData: true
     })
     return listener // to remove listener call listener.disconnect()
@@ -98,22 +91,40 @@ function watch(element, run) {
 
 
 
-async function iframe(origin, parent) {
-    var ifrm = document.createElement("iframe")
-    ifrm.src = "about:blank"
-    ifrm.addEventListener("load", function() {
-        setTimeout(fit.bind(ifrm), 10) // safari fix (https://css-tricks.com/snippets/jquery/fit-iframe-to-content)
-        watch(ifrm.contentDocument.body, fit.bind(ifrm)) // in case scripts or css change the page structure
-        fit(ifrm)
+function iframe(origin, parent) {
+    return new Promise(function(resolve) {
+        var ifrm = document.createElement("iframe")
+        ifrm.setAttribute("src", "about:blank")
+        ifrm.setAttribute("width", "100%")
+        // ifrm.setAttribute("height", 0)
+        ifrm.style.overflow = "hidden"
+        ifrm.style.border = "thin dashed green"
+        ifrm.addEventListener("load", function(event) {
+            // setTimeout(fit.bind(null, event.target), 10) // safari fix (https://css-tricks.com/snippets/jquery/fit-iframe-to-content)
+            // watch(event.target.contentDocument.body, fit.bind(null, event.target)) // in case scripts or css change the page structure
+            // fit(event.target)
+            return resolve(event.target)
+        })
+        if(origin.startsWith("http") && !origin.startsWith(window.location.origin)) {
+            copy(origin).then(function(source) {
+                ifrm.setAttribute("srcdoc", relink(source))
+            })
+        } else {
+            ifrm.setAttribute("src", origin)
+        }
+        (parent || document.body).appendChild(ifrm) // leverage native DOMParser
     })
-    if(origin.startsWith("http") && !origin.startsWith(window.location.origin)) {
-        var source = await copy(origin)
-        ifrm.srcdoc = relink(source)
-    } else {
-        ifrm.src = origin
+}
+
+
+
+function fn(t) {
+    for(var id = 0; id < window.frames.length; id++) {
+        var html = window.frames[id].document.documentElement
+        var style = this.getComputedStyle(html)
+        window.frames[id].frameElement.height = parseInt(style.getPropertyValue("height"))
     }
-    (parent || document.body).appendChild(ifrm) // leverage native DOMParser
-    return ifrm
+    this.requestAnimationFrame(fn)
 }
 
 
@@ -125,9 +136,11 @@ async function init() {
     await iframe("/template/grid.html", grid)
     await iframe("/template/hyperlink.html", grid)
     await iframe("/template/playlist.html", grid)
-    
+
     // await iframe("https://freshman.tech/custom-html5-video/")
-    
+    await iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
+
+
     // iframe("http://designtagebuch.de", grid)
     // iframe("https://mirelleborra.com", grid)
     // iframe("https://www.youtube.com/channel/UC3Qk1lecHOkzYqIqeqj8uyA?view_as=subscriber", grid)
@@ -137,9 +150,10 @@ async function init() {
     // also recursevly, when link gets clicked or ressource gets included
 
     console.log("done loading iframes")
+    window.requestAnimationFrame(fn)
 }
 
 
 
-window.addEventListener("resize", fit)
+// window.addEventListener("resize", fit)
 window.addEventListener("load", init)
