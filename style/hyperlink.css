@@ -6,6 +6,7 @@
     font-size: 14pt;
     line-height: 16pt;
     color: black;
+    cursor: pointer;
 }
 
 .gh-hyperlink:before {
