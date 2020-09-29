@@ -97,8 +97,8 @@ async function main() {
         ifrm.classList.add("gh-fullwidth")
     }
 
-    var a = await iframe("https://freshman.tech/custom-html5-video/", grid, settings)
-    a.classList.add("gh-grid-double")
+    // var a = await iframe("https://freshman.tech/custom-html5-video/", grid, settings)
+    // a.classList.add("gh-grid-double")
     
     await iframe("template/box3d.html", grid, settings)
     var c = await iframe("template/grid.html", grid, settings)
