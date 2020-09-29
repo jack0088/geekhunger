@@ -3,16 +3,27 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Demo</title>
-    <link href="../style/hyperlink.css" rel="stylesheet">
-    <link href="../style/av.css" rel="stylesheet">
+    <link href="../gh/box3d.css" rel="stylesheet">
+    <link href="../gh/hyperlink.css" rel="stylesheet">
+    <link href="../gh/av.css" rel="stylesheet">
+    <script type="text/javascript" src="../gh/av.js"></script>
 </head>
 <body>
-    <ul class="gh-playlist gh-video">
+    <p>Video and audio players are plain html. Use <code>&lt;video&gt;&lt;/video&gt;</code> or <code>&lt;audio&gt;&lt;/audio&gt;</code> tags for that. Here's an example with two videos. Notice, how both sources are chained into a single video timeline with markers! Cool, eh? This is because you've included the <code>av.js</code> and gave your tag a css-class <code>.gh-video</code>.</p>
+    <video name="player" class="gh-video" preload="metadata" controls>
+        <source src="https://www.dropbox.com/s/l16oafm7hwqcid1/dji.mov?raw=1&autoplay=1" type="video/mov">
+        <source src="https://www.dropbox.com/s/l16oafm7hwqcid1/dji.mov?raw=1">
+    </video>
+
+    <p>If you want more control over the display of multiple media sources, use playlists. Playlists are great for grouping videos about the same topic (e.g. course vs tutorial).</p>
+    <p>Create an ordinary unordered list in html and apply <code>.gh-playlist</code> css-class to this element. The class will apply css styles and make it look like a hierarchy tree. Now we have a video player and a playlist but they are not connected. Links in the playlist will open videos as a new page and this is not what we want! We want to connect the playlist to our player, so that, when we click a link to a video inside our playlist, it opens that video up in the connected player.</p>
+    <p>Let's give the playlist and the player tags the same name attribute. This is the key to create a relation between both of them. To make the relationship actually work, include the <code>gh/av.js</code> script.</p>
+    <ul name="player" class="gh-playlist" >
         <li><a href="" class="gh-hyperlink">Hello World</a></li>
         <li>Mount-Point
             <ul>
                 <li><a href="" class="gh-hyperlink">item one</a></li>
-                <li><a href="" class="gh-hyperlink">item two</a></li>
+                <li><a href="https://www.dropbox.com/s/wdvojw5gnomdaoj/facepalm.mp4?raw=1" class="gh-hyperlink">TRY THIS VIDEO!</a></li>
                 <li><a href="" class="gh-hyperlink">item three</a></li>
             </ul>
         </li>
@@ -28,6 +39,12 @@
             </ul>
         </li>
     </ul>
-    <p>Playlists are cool for grouping videos about the same topic (course vs tutorial). We will soon see which attributes hyperlinks need in order to play their href source inside a given video-player. <i>Oh, did your notice how we didn't include the <code>ui.css</code> and why we having now pure html and css styles?</i></p>
+    <p>Click the link from the playlist, that says "TRY THIS VIDEO". Notice, how the video is played across multiple video players? Because the playlist has the same name as all these players. Have your noticed, how I actually sneaked in the <code>name="player"</code> attribute into the player above, that initially was playing two sources as one timeline? The av.js script actually captured that player and forced it to play videos from the playlist instead of its own sources!</p>
+
+    <p>The relationship concept works on plain links as well.</p>
+    <video name="player" class="gh-box3d" preload="metadata" controls>
+        <source src="https://www.dropbox.com/s/l16oafm7hwqcid1/dji.mov?raw=1">
+    </video>
+    <div><a href="https://www.dropbox.com/s/wdvojw5gnomdaoj/facepalm.mp4?raw=1" name="player">play osmo.mov</a></div>
 </body>
 </html>

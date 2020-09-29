@@ -67,7 +67,7 @@ function iframe(origin, parent, setup) {
         ifrm.style.overflowY = "hidden"
         ifrm.style.border = "none"
         ifrm.style.display = "none"
-        ifrm.classList.add("gh-fit") // this is the css class that style/iframe.js automatically reacts to
+        ifrm.classList.add("gh-fit") // this is the css-class that gh/iframe.js automatically reacts to
 
         ifrm.addEventListener("load", function(event) {
             setup(event.target) // custom func to e.g. batch-add additional css classes, etc
@@ -92,7 +92,7 @@ function iframe(origin, parent, setup) {
 
 
 
-async function main() {
+async function run() {
     var grid = document.getElementsByClassName("gh-grid")[0]
 
     var settings = function(ifrm) {
@@ -107,8 +107,8 @@ async function main() {
     var c = await iframe("template/grid.html", grid, settings)
     c.classList.add("gh-fullwidth") // for debugging (just testing)
 
-    await iframe("template/hyperlink.html", grid, settings)
     await iframe("template/media.html", grid, settings)
+    await iframe("template/hyperlink.html", grid, settings)
     
     // await iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
     // await iframe("https://apple.com")
@@ -120,11 +120,8 @@ async function main() {
 
 
 
-addEventListener("load", function() {
-    script("style/iframe.js")
-    .catch(console.warn)
-    .then(function() {
-        main()
-        fit() // run manually as the script will miss its onload-event
-    })
+addEventListener("load", async function() {
+    await script("gh/iframe.js").catch(console.warn)
+    await run()
+    gh_fit() // run manually as the script will miss its onload-event
 })

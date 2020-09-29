@@ -1,5 +1,9 @@
 @import url("font.css");
 
+/* * * * * * * *
+gh-playlist
+* * * * * * * */
+
 ul.gh-playlist {
     font-family: "Work Sans", sans-serif;
     font-weight: 500;
@@ -52,5 +56,17 @@ ul.gh-playlist li:last-child {
     border: none;
 }
 
-/* .gh-video {} */
-/* .gh-audio {} */
+/* * * * * * * *
+gh-video
+* * * * * * * */
+
+.gh-video {
+    max-width: 100%;
+}
+
+/* * * * * * * *
+gh-audio
+* * * * * * * */
+
+.gh-audio {
+}

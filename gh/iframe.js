@@ -1,4 +1,4 @@
-function fit() {
+async function gh_fit() {
     var iframes = document.querySelectorAll("iframe.gh-fit")
 
     for(var id = 0; id < iframes.length; id++) {
@@ -21,7 +21,7 @@ function fit() {
         }
     }
 
-    requestAnimationFrame(fit)
+    requestAnimationFrame(gh_fit)
 }
 
-addEventListener("load", requestAnimationFrame.bind(this, fit))
+addEventListener("load", requestAnimationFrame.bind(this, gh_fit))
