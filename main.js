@@ -108,7 +108,7 @@ async function main() {
     c.classList.add("gh-fullwidth") // for debugging (just testing)
 
     await iframe("template/hyperlink.html", grid, settings)
-    await iframe("template/playlist.html", grid, settings)
+    await iframe("template/media.html", grid, settings)
     
     // await iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
     // await iframe("https://apple.com")
