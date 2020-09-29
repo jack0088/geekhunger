@@ -25,4 +25,4 @@ function gh_fit() {
     requestAnimationFrame(gh_fit)
 }
 
-addEventListener("load", requestAnimationFrame.bind(this, gh_fit))
+requestAnimationFrame(gh_fit)
