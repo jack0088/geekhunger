@@ -5,6 +5,7 @@
     <title>Demo</title>
     <link href="../gh/box3d.css" rel="stylesheet">
     <link href="../gh/hyperlink.css" rel="stylesheet">
+    <link href="../gh/title.css" rel="stylesheet">
     <link href="../gh/av.css" rel="stylesheet">
     <script type="text/javascript" src="../gh/av.js"></script>
 </head>
@@ -41,10 +42,12 @@
     </ul>
     <p>Click the link from the playlist, that says "TRY THIS VIDEO". Notice, how the video is played across multiple video players? Because the playlist has the same name as all these players. Have your noticed, how I actually sneaked in the <code>name="player"</code> attribute into the player above, that initially was playing two sources as one timeline? The av.js script actually captured that player and forced it to play videos from the playlist instead of its own sources!</p>
 
-    <p>The relationship concept works on plain links as well.</p>
-    <video name="player" class="gh-box3d" preload="metadata" controls>
-        <source src="https://www.dropbox.com/s/l16oafm7hwqcid1/dji.mov?raw=1">
-    </video>
-    <div><a href="https://www.dropbox.com/s/wdvojw5gnomdaoj/facepalm.mp4?raw=1" name="player">play osmo.mov</a></div>
+    <div class="gh-box3d">
+        <h2 class="gh-title-video">The relationship concept works on plain links as well.</h2>
+        <video name="player" class="gh-fullwidth" preload="metadata" controls>
+            <source src="https://www.dropbox.com/s/l16oafm7hwqcid1/dji.mov?raw=1">
+        </video>
+        <div><a href="https://www.dropbox.com/s/wdvojw5gnomdaoj/facepalm.mp4?raw=1" name="player">play facepalm.mov</a></div>
+    </div>
 </body>
 </html>

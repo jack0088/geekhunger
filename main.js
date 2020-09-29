@@ -100,37 +100,38 @@ async function run() {
         ifrm.classList.add("gh-fullwidth")
     }
     
-    iframe("template/box3d.html", grid, settings)
+    // iframe("template/box3d.html", grid, settings)
 
-    iframe("template/grid.html", grid, settings).then(function(f) {
-        f.classList.add("gh-fullwidth") // for debugging (just testing)
-        f.style.backgroundColor = "red"
-    })
+    // iframe("template/grid.html", grid, settings).then(function(f) {
+    //     f.classList.add("gh-fullwidth") // for debugging (just testing)
+    //     f.style.backgroundColor = "red"
+    // })
 
-    iframe("https://freshman.tech/custom-html5-video/", grid, settings).then(function(f) {
-        f.classList.add("gh-grid-double")
-    })
+    // iframe("https://freshman.tech/custom-html5-video/", grid, settings).then(function(f) {
+    //     f.classList.add("gh-grid-double")
+    // })
 
     iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
-    iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
+    // iframe("template/media.html", grid, settings)
     // await iframe("template/hyperlink.html", grid, settings)
     
-    iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
+    // iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
+
     // await iframe("https://apple.com")
     // iframe("http://designtagebuch.de")
     // iframe("https://mirelleborra.com", grid)
@@ -142,5 +143,5 @@ async function run() {
 
 addEventListener("load", async function() {
     await script("gh/iframe.js").catch(console.warn)
-    run().then(gh_fit) // run manually as the script will miss its load-event
+    run().then(gh_fit) // invoke gh_fit manually, as the script will miss its load-event uppon inclusion
 })
