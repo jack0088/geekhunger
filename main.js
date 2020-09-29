@@ -85,7 +85,7 @@ function iframe(origin, parent, setup) {
 
         (parent || document.body).appendChild(ifrm) // leverage native DOMParser
     })
-    // TODO this should work like fit() via css classes
+    // TODO this should work for cross-origin sources like gh_fit(), via css class selector
     // if add gh-deepcopy then copy() proxy will kick in
     // src is used as origin and src is replaced by "about:blank" ... etc
 }
@@ -99,18 +99,38 @@ async function run() {
         ifrm.classList.add("gh-fit") // for debugging (this gets set automatically)
         ifrm.classList.add("gh-fullwidth")
     }
-
-    // var a = await iframe("https://freshman.tech/custom-html5-video/", grid, settings)
-    // a.classList.add("gh-grid-double")
     
-    await iframe("template/box3d.html", grid, settings)
-    var c = await iframe("template/grid.html", grid, settings)
-    c.classList.add("gh-fullwidth") // for debugging (just testing)
+    iframe("template/box3d.html", grid, settings)
 
-    await iframe("template/media.html", grid, settings)
-    await iframe("template/hyperlink.html", grid, settings)
+    iframe("template/grid.html", grid, settings).then(function(f) {
+        f.classList.add("gh-fullwidth") // for debugging (just testing)
+        f.style.backgroundColor = "red"
+    })
+
+    iframe("https://freshman.tech/custom-html5-video/", grid, settings).then(function(f) {
+        f.classList.add("gh-grid-double")
+    })
+
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    iframe("template/media.html", grid, settings)
+    // await iframe("template/hyperlink.html", grid, settings)
     
-    // await iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
+    iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
     // await iframe("https://apple.com")
     // iframe("http://designtagebuch.de")
     // iframe("https://mirelleborra.com", grid)
@@ -122,6 +142,5 @@ async function run() {
 
 addEventListener("load", async function() {
     await script("gh/iframe.js").catch(console.warn)
-    await run()
-    gh_fit() // run manually as the script will miss its load-event
+    run().then(gh_fit) // run manually as the script will miss its load-event
 })
