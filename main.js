@@ -85,6 +85,9 @@ function iframe(origin, parent, setup) {
 
         (parent || document.body).appendChild(ifrm) // leverage native DOMParser
     })
+    // TODO this should work like fit() via css classes
+    // if add gh-deepcopy then copy() proxy will kick in
+    // src is used as origin and src is replaced by "about:blank" ... etc
 }
 
 
