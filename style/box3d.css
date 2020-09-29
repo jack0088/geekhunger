@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,500;0,700;1,500;1,700&display=swap");
+@import url("font.css");
+@import url("width.css");
 
 .gh-box3d {
     font-family: "Work Sans", sans-serif;
@@ -28,8 +29,4 @@
 .gh-box3d-blue {
     outline-color: rgb(57, 71, 150);
     box-shadow: -8px 8px 0px 0px rgb(57, 71, 150);
-}
-
-.gh-fullwidth {
-    width: 100%;
 }

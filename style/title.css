@@ -1,0 +1,26 @@
+@import url("font.css");
+
+.gh-title,
+.gh-title-video,
+.gh-title-audio {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 700;
+    font-size: 14pt;
+    line-height: 16pt;
+    color: black;
+}
+
+.gh-title-video:before,
+.gh-title-audio:before {
+    content: "";
+    display: inline-block;
+    background-image: url("playback-video.svg");
+    background-size: contain;
+    width: 16px;
+    height: 16px;
+    margin-right: 2px;
+}
+
+.gh-title-audio:before {
+    background-image: url("playback-audio.svg");
+}
