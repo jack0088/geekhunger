@@ -1,4 +1,4 @@
-async function gh_fit() {
+function gh_fit() {
     var iframes = document.querySelectorAll("iframe.gh-fit")
 
     for(var id = 0; id < iframes.length; id++) {
@@ -15,7 +15,8 @@ async function gh_fit() {
         if(html) {
             html.style.overflowX = "scroll" // scrollbar-jitter fix
             html.style.overflowY = "hidden"
-            var style = win.getComputedStyle(html)
+
+            var style = getComputedStyle(html)
             ifrm.width = parseInt(style.getPropertyValue("width")) // round value
             ifrm.height = parseInt(style.getPropertyValue("height"))
         }

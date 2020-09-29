@@ -123,5 +123,5 @@ async function run() {
 addEventListener("load", async function() {
     await script("gh/iframe.js").catch(console.warn)
     await run()
-    gh_fit() // run manually as the script will miss its onload-event
+    gh_fit() // run manually as the script will miss its load-event
 })
