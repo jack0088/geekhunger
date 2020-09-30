@@ -8,7 +8,8 @@ function gh_preset() {
         player.autoplay = false
         player.loop = false
         player.muted = false
-        // Interesting fact about player.preload = "metadata"
+        player.preload = "metadata"
+        // Interesting fact about "metadata" preload:
         // meta information is always fetched after(!) the source has been loaded
         // browsers treat this setting almost identical to "auto"
         // concluding, a value of "none" would never have access to source .duration
