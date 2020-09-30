@@ -39,7 +39,7 @@ async function gh_copy(origin) {
 
 
 
-function gh_relink(source) {
+async function gh_relink(source) {
     // var blacklist = page.querySelectorAll("[src], [href], [action]")
     // console.log(page.URL)
     // console.log(blacklist)
@@ -49,89 +49,119 @@ function gh_relink(source) {
     //     if(elem.getAttribute("href")) elem.setAttribute("href", reset(elem.getAttribute("href")))
     //     if(elem.getAttribute("action")) elem.setAttribute("action", reset(elem.getAttribute("action")))
     //     // url() in stylesheets?
-           // references in other files like .js? should I handle these as well?
+            // references in other files like .js? should I handle these as well?
     // }
     return source
 }
 
 
 
+function gh_deepcopy(origin, iframe) {
+    if(typeof origin !== "undefined" && typeof iframe !== "undefined") {
+        gh_copy(origin).then(function(copy) {
+            gh_relink(copy).then(function(source) {
+                iframe.srcdoc = source
+            })
+        })
+    } else {
+        Array.from(document.querySelectorAll("iframe.gh-fit"))
+        .filter(function(iframe) { // cross-origin
+            return typeof iframe.src === "string"
+            && iframe.src.length > 0
+            && iframe.src !== "about:blank"
+            && new URL(iframe.src).origin !== location.origin
+        })
+        .forEach(function(iframe) {
+            gh_deepcopy(iframe.src, iframe)
+        })
+    }
+}
+
+
+
 function gh_iframe(origin, parent) {
     var iframe = document.createElement("iframe")
-    // iframe.addEventListener("load", resolve.bind(this, iframe))
-    iframe.src = "about:blank"
+    iframe.classList.add("gh-fit") // this is the css-class that gh/iframe.js automatically reacts to
+    iframe.classList.add("gh-fullwidth")
     iframe.style.maxWidth = "100%"
     iframe.style.overflowX = "scroll"
     iframe.style.overflowY = "hidden"
-    // iframe.style.border = "none"
+    iframe.style.border = "none"
     iframe.style.display = "block"
-    iframe.classList.add("gh-fit") // this is the css-class that gh/iframe.js automatically reacts to
-
-    if(origin.startsWith("http") && !origin.startsWith(window.location.origin)) {
-        gh_copy(origin).then(function(source) {
-            iframe.srcdoc = gh_relink(source)
-        })
+    document.appendChild.call(parent || document.body, iframe) // Why??? Because:
+    // I omit semicolons and js compiler screws up sometimes, with `TypeError "block" is not a function`
+    // Could have used `;(parent || document.body, iframe).appendChild(iframe)` instead
+    if(origin.startsWith("http") && !origin.startsWith(location.origin)) {
+        iframe.src = "about:blank"
+        gh_deepcopy(origin, iframe)
     } else {
         iframe.src = origin
     }
-    (parent || document.body).appendChild(iframe) // leverage native DOMParser
     return iframe
 }
 
 
 
 addEventListener("DOMContentLoaded", function() {
-    // TODO cross-origin sources should work like gh_fit(), via css class selector
-    // if add gh-deepcopy then gh_copy() proxy will kick in
-    // src is used as origin and src is replaced by "about:blank" ... etc
+    
 
     gh_script("gh/iframe.js").catch(console.warn)
 
     var grid = document.getElementsByClassName("gh-grid")[0]
 
-    function settings(iframe) {
+    function preset(iframe) {
         iframe.classList.add("gh-fit") // for debugging (this gets set automatically)
         iframe.classList.add("gh-fullwidth")
     }
     
-    settings(gh_iframe("template/box3d.html", grid))
+    gh_iframe("template/box3d.html", grid)
+
+
+
+
 
     // gh_iframe("template/grid.html", grid).then(function(f) {
-    //     settings()
+    //     preset()
     //     f.classList.add("gh-fullwidth") // for debugging (just testing)
     //     f.style.backgroundColor = "red"
     // })
 
     // gh_iframe("https://freshman.tech/custom-html5-video/", grid).then(function(f) {
-    //     settings()
+    //     preset()
     //     f.classList.add("gh-grid-double")
     // })
 
-    // settings(gh_iframe("template/media.html", grid))
+    // preset(gh_iframe("template/media.html", grid))
 
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/media.html", grid).then(settings)
-    // gh_iframe("template/hyperlink.html", grid).then(settings)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/media.html", grid).then(preset)
+    // gh_iframe("template/hyperlink.html", grid).then(preset)
     
     // gh_iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content").then((e) => {e.classList.add("gh-fullwidth")})
+    // var a = gh_iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
+    // a.removeAttribute("src")
+    // a.classList.add("gh-fullwidth")
 
     // gh_iframe("https://apple.com")
     // gh_iframe("http://designtagebuch.de")
     // gh_iframe("https://mirelleborra.com", grid)
     // gh_iframe("https://www.youtube.com/channel/UC3Qk1lecHOkzYqIqeqj8uyA?view_as=subscriber", grid)
     // gh_iframe("https://amazon.de", grid)
+
+
+    gh_deepcopy()
 })
