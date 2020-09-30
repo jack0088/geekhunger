@@ -1,0 +1,6 @@
+@import url("width.css");
+
+.gh-player {
+    display: block;
+    max-width: 100%;
+}

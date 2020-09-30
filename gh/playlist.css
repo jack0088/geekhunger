@@ -1,8 +1,5 @@
 @import url("font.css");
-
-/* * * * * * * *
-gh-playlist
-* * * * * * * */
+@import url("hyperlink.css");
 
 ul.gh-playlist {
     font-family: "Work Sans", sans-serif;
@@ -54,19 +51,4 @@ ul.gh-playlist li:last-child:before {
 
 ul.gh-playlist li:last-child {
     border: none;
-}
-
-/* * * * * * * *
-gh-video
-* * * * * * * */
-
-.gh-video {
-    max-width: 100%;
-}
-
-/* * * * * * * *
-gh-audio
-* * * * * * * */
-
-.gh-audio {
 }
