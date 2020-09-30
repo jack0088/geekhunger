@@ -1,12 +1,8 @@
 function gh_fit() {
-    var iframes = document.querySelectorAll("iframe.gh-fit")
-
-    for(var id = 0; id < iframes.length; id++) {
-        var win = iframes[id].contentWindow
-        var doc = win.document
+    document.querySelectorAll("iframe.gh-fit").forEach(function(iframe) {
+        var doc = iframe.contentWindow.document
         var html = doc.documentElement
         var body = doc.body
-        var ifrm = iframes[id] // or win.frameElement
 
         if(body) {
             body.style.overflowX = "scroll" // scrollbar-jitter fix
@@ -15,13 +11,12 @@ function gh_fit() {
         if(html) {
             html.style.overflowX = "scroll" // scrollbar-jitter fix
             html.style.overflowY = "hidden"
-
+    
             var style = getComputedStyle(html)
-            ifrm.width = parseInt(style.getPropertyValue("width")) // round value
-            ifrm.height = parseInt(style.getPropertyValue("height"))
+            iframe.width = parseInt(style.getPropertyValue("width")) // round value
+            iframe.height = parseInt(style.getPropertyValue("height"))
         }
-    }
-
+    })
     requestAnimationFrame(gh_fit)
 }
 
