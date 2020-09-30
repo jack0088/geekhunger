@@ -57,34 +57,34 @@ function gh_relink(source) {
 
 
 function gh_iframe(origin, parent) {
-    return new Promise(function(resolve) {
-        var iframe = document.createElement("iframe")
-        iframe.addEventListener("load", resolve.bind(this, iframe))
-        iframe.src = "about:blank"
-        iframe.style.maxWidth = "100%"
-        iframe.style.overflowX = "scroll"
-        iframe.style.overflowY = "hidden"
-        // iframe.style.border = "none"
-        iframe.style.display = "block"
-        iframe.classList.add("gh-fit") // this is the css-class that gh/iframe.js automatically reacts to
+    var iframe = document.createElement("iframe")
+    // iframe.addEventListener("load", resolve.bind(this, iframe))
+    iframe.src = "about:blank"
+    iframe.style.maxWidth = "100%"
+    iframe.style.overflowX = "scroll"
+    iframe.style.overflowY = "hidden"
+    // iframe.style.border = "none"
+    iframe.style.display = "block"
+    iframe.classList.add("gh-fit") // this is the css-class that gh/iframe.js automatically reacts to
 
-        if(origin.startsWith("http") && !origin.startsWith(window.location.origin)) {
-            gh_copy(origin).then(function(source) {
-                iframe.srcdoc = gh_relink(source)
-            })
-        } else {
-            iframe.src = origin
-        }
-        (parent || document.body).appendChild(iframe) // leverage native DOMParser
-    })
-    // TODO this should work for cross-origin sources like gh_fit(), via css class selector
-    // if add gh-deepcopy then gh_copy() proxy will kick in
-    // src is used as origin and src is replaced by "about:blank" ... etc
+    if(origin.startsWith("http") && !origin.startsWith(window.location.origin)) {
+        gh_copy(origin).then(function(source) {
+            iframe.srcdoc = gh_relink(source)
+        })
+    } else {
+        iframe.src = origin
+    }
+    (parent || document.body).appendChild(iframe) // leverage native DOMParser
+    return iframe
 }
 
 
 
 addEventListener("DOMContentLoaded", function() {
+    // TODO cross-origin sources should work like gh_fit(), via css class selector
+    // if add gh-deepcopy then gh_copy() proxy will kick in
+    // src is used as origin and src is replaced by "about:blank" ... etc
+
     gh_script("gh/iframe.js").catch(console.warn)
 
     var grid = document.getElementsByClassName("gh-grid")[0]
@@ -94,7 +94,7 @@ addEventListener("DOMContentLoaded", function() {
         iframe.classList.add("gh-fullwidth")
     }
     
-    // gh_iframe("template/box3d.html", grid).then(settings)
+    settings(gh_iframe("template/box3d.html", grid))
 
     // gh_iframe("template/grid.html", grid).then(function(f) {
     //     settings()
@@ -107,7 +107,8 @@ addEventListener("DOMContentLoaded", function() {
     //     f.classList.add("gh-grid-double")
     // })
 
-    gh_iframe("template/media.html", grid).then(settings)
+    // settings(gh_iframe("template/media.html", grid))
+
     // gh_iframe("template/media.html", grid).then(settings)
     // gh_iframe("template/media.html", grid).then(settings)
     // gh_iframe("template/media.html", grid).then(settings)
