@@ -56,7 +56,7 @@ async function gh_relink(source) {
 
 
 
-function gh_deepcopy(origin, iframe) {
+function gh_proxy(origin, iframe) {
     if(typeof origin !== "undefined" && typeof iframe !== "undefined") {
         gh_copy(origin).then(function(copy) {
             gh_relink(copy).then(function(source) {
@@ -72,7 +72,7 @@ function gh_deepcopy(origin, iframe) {
             && new URL(iframe.src).origin !== location.origin
         })
         .forEach(function(iframe) {
-            gh_deepcopy(iframe.src, iframe)
+            gh_proxy(iframe.src, iframe)
         })
     }
 }
@@ -93,7 +93,7 @@ function gh_iframe(origin, parent) {
     // Could have used `;(parent || document.body, iframe).appendChild(iframe)` instead
     if(origin.startsWith("http") && !origin.startsWith(location.origin)) {
         iframe.src = "about:blank"
-        gh_deepcopy(origin, iframe)
+        gh_proxy(origin, iframe)
     } else {
         iframe.src = origin
     }
@@ -163,5 +163,5 @@ addEventListener("DOMContentLoaded", function() {
     // gh_iframe("https://amazon.de", grid)
 
 
-    gh_deepcopy()
+    gh_proxy()
 })
