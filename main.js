@@ -131,7 +131,7 @@ addEventListener("DOMContentLoaded", function() {
     //     f.style.backgroundColor = "red"
     // })
 
-    gh_iframe("https://freshman.tech/custom-html5-video/", grid)
+    // gh_iframe("https://freshman.tech/custom-html5-video/", grid)
     // gh_iframe("https://freshman.tech/custom-html5-video/", grid).then(function(f) {
     //     preset()
     //     f.classList.add("gh-grid-double")
