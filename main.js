@@ -88,8 +88,9 @@ function gh_iframe(origin, parent) {
     iframe.style.overflowY = "hidden"
     iframe.style.border = "none"
     iframe.style.display = "block"
+    // iframe.sandbox = "allow-same-origin allow-scripts" // disable sandbox
     document.appendChild.call(parent || document.body, iframe) // Why??? Because:
-    // I omit semicolons and js compiler screws up sometimes, with `TypeError "block" is not a function`
+    // I omit semicolons and js compiler screws up sometimes, with e.g. `TypeError "block" is not a function`
     // Could have used `;(parent || document.body, iframe).appendChild(iframe)` instead
     if(origin.startsWith("http") && !origin.startsWith(location.origin)) {
         iframe.src = "about:blank"
@@ -104,8 +105,12 @@ function gh_iframe(origin, parent) {
 
 addEventListener("DOMContentLoaded", function() {
     
-
+    
     gh_script("gh/iframe.js").catch(console.warn)
+    
+        document.addEventListener("readystatechange", (event) => {
+            console.log(document.readyState)
+        })
 
     var grid = document.getElementsByClassName("gh-grid")[0]
 
@@ -114,7 +119,7 @@ addEventListener("DOMContentLoaded", function() {
         iframe.classList.add("gh-fullwidth")
     }
     
-    gh_iframe("template/box3d.html", grid)
+    gh_iframe("template/media.html", grid)
 
 
 
@@ -126,6 +131,7 @@ addEventListener("DOMContentLoaded", function() {
     //     f.style.backgroundColor = "red"
     // })
 
+    gh_iframe("https://freshman.tech/custom-html5-video/", grid)
     // gh_iframe("https://freshman.tech/custom-html5-video/", grid).then(function(f) {
     //     preset()
     //     f.classList.add("gh-grid-double")
