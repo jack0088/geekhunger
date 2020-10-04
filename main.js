@@ -99,7 +99,7 @@ addEventListener("DOMContentLoaded", function() {
         iframe.classList.add("gh-fullwidth")
     }
     
-    gh_iframe("template/media.html", grid)
+    gh_iframe("demo/media.html", grid)
 
     gh_iframe("https://css-tricks.com/snippets/jquery/fit-iframe-to-content")
     // gh_iframe("https://freshman.tech/custom-html5-video", grid)
