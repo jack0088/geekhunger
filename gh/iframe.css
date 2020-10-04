@@ -1,0 +1,9 @@
+@import url("width.css");
+
+iframe.gh-fit {
+    display: block;
+    border: none;
+    max-width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
