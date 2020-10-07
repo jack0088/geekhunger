@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Demo</title>
+    <script type="text/javascript">
+        function msg(txt) {
+            if(!document.body.firstElementChild || document.body.firstElementChild.tagName.toLocaleLowerCase() !== "code") {
+                document.body.insertBefore(document.createElement("code"), document.body.firstElementChild)
+            }
+            document.body.firstElementChild.innerHTML = txt || "thinking..."
+        }
+
+        async function feed() {
+            // const sources = navigator.mediaDevices
+            // const devices = await sources.enumerateDevices()
+            // const camera = await sources.getUserMedia({video: true, audio: true})
+            // console.log(devices)
+            // console.log(camera.getAudioTracks(), camera.getVideoTracks())
+            const screen = await navigator.mediaDevices.getDisplayMedia({video: true, audio: true}).catch(console.error)
+            return screen
+        }
+
+        // DOMContentLoaded will work for .getUserMedia()
+        // but it will not work for .getDisplayMedia()
+        // as the user must explicitly invoke the request by manual action like a click on a button
+        // therefor we use the click event here
+        // Also note, that navigator.mediaDevices needs a SecureContext (https or localhost)
+        // 192.168.0.121:8080 will not work, whereas localhost:8080 works fine
+        document.addEventListener("click", async function() {
+            if(document.body.firstElementChild
+            && document.body.firstElementChild.tagName.toLocaleLowerCase() === "code"
+            && document.body.firstElementChild.innerHTML === "done;)") {
+                return // already requested
+            }
+
+            msg()
+
+            const title = document.createElement("h1")
+            title.innerHTML = "Camera And Screen Streaming"
+
+            msg("waiting for media devices...")
+
+            const cam = document.createElement("video")
+            cam.style.maxWidth = "100%"
+            cam.autoplay = true // or use false and call cam.play() after setting the .srcObject
+            cam.controls = true
+            cam.srcObject = await feed().catch(console.error)
+
+            msg("building the dom...")
+
+            document.body.appendChild(title)
+            document.body.appendChild(cam)
+
+            msg("done;)")
+        })
+
+        document.addEventListener("DOMContentLoaded", function() {
+            msg("please, click somewhere to request video/audio/screen sharing...")
+        })
+    </script>
+</head>
+<body>
+</body>
+</html>
